@@ -1,0 +1,29 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import AuthPage from './pages/AuthPage';
+import QuizPage from './pages/QuizPage';
+
+function ProtectedRoute({ children }) {
+  const token = localStorage.getItem('token');
+  return token ? children : <Navigate to="/auth" />;
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/auth" element={<AuthPage />} />
+        <Route
+          path="/quiz"
+          element={
+            <ProtectedRoute>
+              <QuizPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/auth" />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
