@@ -8,7 +8,8 @@ const questionSchema = new mongoose.Schema({
 
 const quizSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  questions: [questionSchema]
+  questions: [questionSchema],
+  image: String
 });
 
 module.exports = mongoose.model('Quiz', quizSchema);

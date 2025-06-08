@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import AuthPage from './pages/AuthPage';
 import QuizPage from './pages/QuizPage';
 import QuizSolvePage from './pages/QuizSolvePage';
+import CreateQuizPage from './pages/CreateQuizPage';
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('token');
@@ -18,6 +19,14 @@ function App() {
     element={
       <ProtectedRoute>
         <QuizPage />
+      </ProtectedRoute>
+    }
+  />
+  <Route
+    path="/quiz/create"
+    element={
+      <ProtectedRoute>
+        <CreateQuizPage />
       </ProtectedRoute>
     }
   />

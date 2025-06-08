@@ -12,6 +12,19 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Błąd pobierania quizów' });
   }
 });
+router.post('/', async (req, res) => {
+  try {
+    const { title, questions, image } = req.body;
+    if (!title || !questions || !Array.isArray(questions) || questions.length === 0) {
+      return res.status(400).json({ error: 'Nieprawidłowe dane quizu' });
+    }
+    const quiz = new Quiz({ title, questions, image });
+    await quiz.save();
+    res.status(201).json(quiz);
+  } catch (err) {
+    res.status(400).json({ error: 'Błąd dodawania quizu' });
+  }
+});
 router.get('/results/:userId', async (req, res) => {
   try {
     const results = await Result.find({ userId: req.params.userId }).sort({ date: -1 });

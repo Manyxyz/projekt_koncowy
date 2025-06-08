@@ -192,18 +192,38 @@ function QuizPage() {
       )}
       <div
         style={{
-          display: 'inline-block',
-          background: '#fff',
-          borderRadius: '16px',
-          boxShadow: '0 2px 8px rgba(99,92,240,0.08)',
-          padding: '12px 32px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
           marginLeft: '32px',
+          marginRight: '32px',
           marginBottom: '16px',
-          border: '1px solid #534bf5',
         }}
       >
-        <h2 style={{ margin: 0, color: '#534bf5' }}>Dostępne quizy:</h2>
+        <div
+          style={{
+            background: '#fff',
+            borderRadius: '16px',
+            boxShadow: '0 2px 8px rgba(99,92,240,0.08)',
+            padding: '12px 32px',
+            border: '1px solid #534bf5',
+            minWidth: 220
+          }}
+        >
+          <h2 style={{ margin: 0, color: '#534bf5' }}>Dostępne quizy:</h2>
+        </div>
+        <span
+          style={{
+            color: '#534bf5',
+            fontWeight: 'bold',
+            fontSize: '1.15rem',
+            marginLeft: '32px'
+          }}
+        >
+          {username && `Cześć ${username}!`}
+        </span>
       </div>
+      
       <div
         style={{
           display: 'flex',
@@ -217,6 +237,27 @@ function QuizPage() {
           <QuizCard key={quiz._id} quiz={quiz} />
         ))}
       </div>
+      <button
+        onClick={() => navigate('/quiz/create')}
+        style={{
+          position: 'fixed',
+          right: 36,
+          bottom: 36,
+          background: 'linear-gradient(90deg, #534bf5 60%, #262672 100%)',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '50px',
+          padding: '16px 32px',
+          fontWeight: 'bold',
+          fontSize: '1.1rem',
+          boxShadow: '0 4px 16px rgba(99,92,240,0.15)',
+          cursor: 'pointer',
+          zIndex: 1000,
+          transition: 'background 0.2s'
+        }}
+      >
+        Stwórz quiz
+      </button>
     </div>
   );
 }
