@@ -1,43 +1,39 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { addQuiz } from '../services/api';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Logo from '../components/Logo';
 
-function CreateQuizPage() {
-  const [title, setTitle] = useState('');
-  const [image, setImage] = useState('');
-  const [questions, setQuestions] = useState([
-    { question: '', options: ['', '', '', ''], answer: 0 }
-  ]);
+function EditQuizPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [quiz, setQuiz] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get(`http://localhost:5000/api/quiz/${id}`).then(res => setQuiz(res.data));
+  }, [id]);
+
+  const handleChange = (field, value) => {
+    setQuiz(prev => ({ ...prev, [field]: value }));
+  };
 
   const handleQuestionChange = (idx, value) => {
-    const updated = [...questions];
+    const updated = [...quiz.questions];
     updated[idx].question = value;
-    setQuestions(updated);
+    setQuiz(prev => ({ ...prev, questions: updated }));
   };
 
   const handleOptionChange = (qIdx, oIdx, value) => {
-    const updated = [...questions];
+    const updated = [...quiz.questions];
     updated[qIdx].options[oIdx] = value;
-    setQuestions(updated);
+    setQuiz(prev => ({ ...prev, questions: updated }));
   };
 
   const handleAnswerChange = (qIdx, value) => {
-    const updated = [...questions];
+    const updated = [...quiz.questions];
     updated[qIdx].answer = Number(value);
-    setQuestions(updated);
-  };
-
-  const addQuestion = () => {
-    setQuestions([...questions, { question: '', options: ['', '', '', ''], answer: 0 }]);
-  };
-
-  const removeQuestion = (idx) => {
-    if (questions.length === 1) return;
-    setQuestions(questions.filter((_, i) => i !== idx));
+    setQuiz(prev => ({ ...prev, questions: updated }));
   };
 
   const handleSubmit = async (e) => {
@@ -46,17 +42,18 @@ function CreateQuizPage() {
     setSuccess(false);
     try {
       const user = JSON.parse(localStorage.getItem('user'));
-      await addQuiz({ title, image, questions, author: user.id });
+      await axios.put(`http://localhost:5000/api/quiz/${id}`, { ...quiz, author: user.id });
       setSuccess(true);
       setTimeout(() => navigate('/quiz'), 1200);
     } catch (err) {
-      setError(err.response?.data?.error || 'Błąd dodawania quizu');
+      setError(err.response?.data?.error || 'Błąd edycji quizu');
     }
   };
 
+  if (!quiz) return <div>Ładowanie...</div>;
+
   return (
     <div>
-      {/* Pasek górny */}
       <div
         style={{
           width: '100%',
@@ -85,44 +82,26 @@ function CreateQuizPage() {
           border: '1px solid #534bf5'
         }}
       >
-        <h2 style={{ color: '#534bf5', marginTop: 0 }}>Stwórz nowy quiz</h2>
+        <h2 style={{ color: '#534bf5', marginTop: 0 }}>Edytuj quiz</h2>
         <input
           type="text"
           placeholder="Tytuł quizu"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          value={quiz.title}
+          onChange={e => handleChange('title', e.target.value)}
           required
           style={{ width: '100%', marginBottom: 16, padding: 8, borderRadius: 8, border: '1px solid #ccc' }}
         />
         <input
           type="text"
           placeholder="Link do obrazka (opcjonalnie)"
-          value={image}
-          onChange={e => setImage(e.target.value)}
+          value={quiz.image}
+          onChange={e => handleChange('image', e.target.value)}
           style={{ width: '100%', marginBottom: 24, padding: 8, borderRadius: 8, border: '1px solid #ccc' }}
         />
-        {questions.map((q, qIdx) => (
+        {quiz.questions.map((q, qIdx) => (
           <div key={qIdx} style={{ marginBottom: 24, borderBottom: '1px solid #eee', paddingBottom: 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
               <b style={{ color: '#534bf5' }}>Pytanie {qIdx + 1}:</b>
-              {questions.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeQuestion(qIdx)}
-                  style={{
-                    marginLeft: 12,
-                    background: 'none',
-                    border: 'none',
-                    color: '#d32f2f',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                    fontSize: '1.2rem'
-                  }}
-                  title="Usuń pytanie"
-                >
-                  ×
-                </button>
-              )}
             </div>
             <input
               type="text"
@@ -159,23 +138,6 @@ function CreateQuizPage() {
           </div>
         ))}
         <button
-          type="button"
-          onClick={addQuestion}
-          style={{
-            background: '#bcb3d9',
-            color: '#262672',
-            border: 'none',
-            borderRadius: '8px',
-            padding: '8px 18px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            marginBottom: 24
-          }}
-        >
-          Dodaj pytanie
-        </button>
-        <br />
-        <button
           type="submit"
           style={{
             background: 'linear-gradient(90deg, #534bf5 60%, #262672 100%)',
@@ -188,13 +150,13 @@ function CreateQuizPage() {
             cursor: 'pointer'
           }}
         >
-          Zapisz quiz
+          Zapisz zmiany
         </button>
         {error && <p style={{ color: 'red', marginTop: 12 }}>{error}</p>}
-        {success && <p style={{ color: 'green', marginTop: 12 }}>Quiz zapisany!</p>}
+        {success && <p style={{ color: 'green', marginTop: 12 }}>Quiz zaktualizowany!</p>}
       </form>
     </div>
   );
 }
 
-export default CreateQuizPage;
+export default EditQuizPage;

@@ -16,6 +16,9 @@ function QuizPage() {
   const [showAllResults, setShowAllResults] = useState(false);
   const [allResults, setAllResults] = useState([]);
   const menuRef = useRef(null);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user?.id;
+  const userQuizzes = quizzes.filter(q => q.author && q.author._id === userId);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -64,8 +67,15 @@ function QuizPage() {
     setShowAllResults(false);
   };
 
+  const handleQuizDelete = (id) => {
+    setQuizzes(quizzes => quizzes.filter(q => q._id !== id));
+  };
+
   return (
-    <div>
+    <div
+      style={{
+        paddingBottom: '56px'
+      }}>
       {/* Pasek górny */}
       <div
         style={{
@@ -234,8 +244,47 @@ function QuizPage() {
         }}
       >
         {quizzes.map(quiz => (
-          <QuizCard key={quiz._id} quiz={quiz} />
+        <QuizCard key={quiz._id} quiz={quiz} onDelete={handleQuizDelete} />
         ))}
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginLeft: '32px',
+          marginBottom: '16px',
+          marginTop: '32px'
+        }}
+      >
+        <div
+          style={{
+            background: '#fff',
+            borderRadius: '16px',
+            boxShadow: '0 2px 8px rgba(99,92,240,0.08)',
+            padding: '12px 32px',
+            border: '1px solid #534bf5',
+            minWidth: 220
+          }}
+        >
+          <h2 style={{ margin: 0, color: '#534bf5' }}>Twoje quizy:</h2>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '24px',
+          marginTop: '24px',
+          marginLeft: '32px'
+        }}
+      >
+        {userQuizzes.length === 0 ? (
+          <span style={{ color: '#888', marginLeft: 8 }}>Nie masz jeszcze własnych quizów.</span>
+        ) : (
+          userQuizzes.map(quiz => (
+            <QuizCard key={quiz._id} quiz={quiz} onDelete={handleQuizDelete} />
+          ))
+        )}
       </div>
       <button
         onClick={() => navigate('/quiz/create')}

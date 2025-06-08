@@ -9,7 +9,8 @@ const questionSchema = new mongoose.Schema({
 const quizSchema = new mongoose.Schema({
   title: { type: String, required: true },
   questions: [questionSchema],
-  image: String
+  image: String,
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 });
 
 module.exports = mongoose.model('Quiz', quizSchema);
