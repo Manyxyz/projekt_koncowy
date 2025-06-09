@@ -41,7 +41,7 @@ function AllResultsModal({ allResults, onClose }) {
         >
           ×
         </button>
-        <h3 style={{ color: '#1976d2', marginTop: 0 }}>Wyniki wszystkich użytkowników</h3>
+        <h3 style={{ color: '#1976d2', marginTop: 0 }}>Najlepsze wyniki użytkowników</h3>
         {allResults.length === 0 ? (
           <p>Brak wyników.</p>
         ) : (

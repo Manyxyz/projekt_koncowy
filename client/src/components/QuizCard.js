@@ -2,17 +2,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
 import { deleteQuiz } from '../services/api';
 
-function QuizCard({ quiz, onDelete }) {
+function QuizCard({ quiz, onDeleteRequest }) {
   const titleRef = useRef(null);
   const [fontSize, setFontSize] = useState(18);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'));
-  const handleDelete = async () => {
-    if (window.confirm('Czy na pewno chcesz usunąć ten quiz?')) {
-      await deleteQuiz(quiz._id);
-      if (onDelete) onDelete(quiz._id);
-    }
-  };
+  
 
   useEffect(() => {
     // Automatyczne dopasowanie wielkości czcionki do wysokości tytułu (max 2 linie)
@@ -111,7 +106,7 @@ function QuizCard({ quiz, onDelete }) {
             Edytuj
           </button>
           <button
-            onClick={handleDelete}
+            onClick={() => onDeleteRequest(quiz._id)}
             style={{
               position: 'absolute',
               top: 8,

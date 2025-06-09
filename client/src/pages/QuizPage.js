@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getQuizzes, getUserResults, getAllResults } from '../services/api';
+import { getQuizzes, getUserResults, getAllResults, deleteQuiz } from '../services/api';
 import QuizCard from '../components/QuizCard';
 import ResultsModal from '../components/ResultsModal';
 import AllResultsModal from '../components/AllResultsModal';
@@ -15,6 +15,7 @@ function QuizPage() {
   const [results, setResults] = useState([]);
   const [showAllResults, setShowAllResults] = useState(false);
   const [allResults, setAllResults] = useState([]);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const menuRef = useRef(null);
   const user = JSON.parse(localStorage.getItem('user'));
   const userId = user?.id;
@@ -145,7 +146,7 @@ function QuizPage() {
         {/* Rozwijane menu */}
         {menuOpen && (
           <div
-          ref={menuRef}
+            ref={menuRef}
             style={{
               position: 'absolute',
               top: '60px',
@@ -159,6 +160,21 @@ function QuizPage() {
               padding: '10px 0'
             }}
           >
+            <button
+              onClick={() => { setMenuOpen(false); navigate('/account'); }}
+              style={{
+                width: '100%',
+                background: 'none',
+                border: 'none',
+                color: '#534bf5',
+                fontSize: '1rem',
+                padding: '12px 24px',
+                textAlign: 'left',
+                cursor: 'pointer'
+              }}
+            >
+              Konto
+            </button>
             <button
               onClick={handleShowResults}
               style={{
@@ -187,11 +203,75 @@ function QuizPage() {
                 cursor: 'pointer'
               }}
             >
-              Wyniki wszystkich użytkowników
+              Najlepsze wyniki użytkowników
             </button>
           </div>
         )}
       </div>
+      {/* Modal z potwierdzeniem usunięcia quizu */}
+      {confirmDeleteId && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(0,0,0,0.25)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 200
+          }}
+          onClick={() => setConfirmDeleteId(null)}
+        >
+          <div
+            style={{
+              background: '#fff',
+              borderRadius: '16px',
+              padding: '32px 40px',
+              minWidth: '320px',
+              boxShadow: '0 2px 16px rgba(0,0,0,0.18)',
+              position: 'relative'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <h3 style={{ color: '#d32f2f', marginTop: 0 }}>Potwierdź usunięcie</h3>
+            <p>Czy na pewno chcesz usunąć ten quiz?</p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
+              <button
+                onClick={() => setConfirmDeleteId(null)}
+                style={{
+                  background: '#bcb3d9',
+                  color: '#262672',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '8px 18px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer'
+                }}
+              >
+                Anuluj
+              </button>
+              <button
+                onClick={async () => {
+                  await deleteQuiz(confirmDeleteId);
+                  setQuizzes(qs => qs.filter(q => q._id !== confirmDeleteId));
+                  setConfirmDeleteId(null);
+                }}
+                style={{
+                  background: '#d32f2f',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '8px 18px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer'
+                }}
+              >
+                Usuń
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Modal z wynikami użytkownika */}
       {showResults && (
         <ResultsModal results={results} onClose={handleCloseResults} />
@@ -244,7 +324,11 @@ function QuizPage() {
         }}
       >
         {quizzes.map(quiz => (
-        <QuizCard key={quiz._id} quiz={quiz} onDelete={handleQuizDelete} />
+          <QuizCard
+            key={quiz._id}
+            quiz={quiz}
+            onDeleteRequest={setConfirmDeleteId}
+          />
         ))}
       </div>
       <div
@@ -282,7 +366,7 @@ function QuizPage() {
           <span style={{ color: '#888', marginLeft: 8 }}>Nie masz jeszcze własnych quizów.</span>
         ) : (
           userQuizzes.map(quiz => (
-            <QuizCard key={quiz._id} quiz={quiz} onDelete={handleQuizDelete} />
+            <QuizCard key={quiz._id} quiz={quiz} onDeleteRequest={setConfirmDeleteId} />
           ))
         )}
       </div>

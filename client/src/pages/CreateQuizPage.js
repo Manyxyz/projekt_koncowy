@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addQuiz } from '../services/api';
 import Logo from '../components/Logo';
+import Toast from '../components/Toast';
 
 function CreateQuizPage() {
   const [title, setTitle] = useState('');
@@ -12,6 +13,7 @@ function CreateQuizPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+  const [toast, setToast] = useState('');
 
   const handleQuestionChange = (idx, value) => {
     const updated = [...questions];
@@ -48,6 +50,7 @@ function CreateQuizPage() {
       const user = JSON.parse(localStorage.getItem('user'));
       await addQuiz({ title, image, questions, author: user.id });
       setSuccess(true);
+      setToast('Quiz został dodany!');
       setTimeout(() => navigate('/quiz'), 1200);
     } catch (err) {
       setError(err.response?.data?.error || 'Błąd dodawania quizu');
@@ -56,6 +59,9 @@ function CreateQuizPage() {
 
   return (
     <div>
+       <div>
+        <Toast message={toast} onClose={() => setToast('')} />
+      </div>
       {/* Pasek górny */}
       <div
         style={{
@@ -191,7 +197,6 @@ function CreateQuizPage() {
           Zapisz quiz
         </button>
         {error && <p style={{ color: 'red', marginTop: 12 }}>{error}</p>}
-        {success && <p style={{ color: 'green', marginTop: 12 }}>Quiz zapisany!</p>}
       </form>
     </div>
   );

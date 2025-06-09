@@ -4,6 +4,8 @@ import QuizPage from './pages/QuizPage';
 import QuizSolvePage from './pages/QuizSolvePage';
 import CreateQuizPage from './pages/CreateQuizPage';
 import EditQuizPage from './pages/EditQuizPage';
+import AccountPage from './pages/AccountPage';
+
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('token');
@@ -23,6 +25,14 @@ function App() {
       </ProtectedRoute>
     }
   />
+  <Route
+  path="/account"
+  element={
+    <ProtectedRoute>
+      <AccountPage />
+    </ProtectedRoute>
+  }
+/>
   <Route
     path="/quiz/create"
     element={

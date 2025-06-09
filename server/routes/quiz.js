@@ -63,12 +63,27 @@ router.post('/result', async (req, res) => {
 });
 router.get('/all-results', async (req, res) => {
   try {
-    const results = await Result.find()
-      .populate('userId', 'username')
-      .sort({ date: -1 });
+    const results = await Result.aggregate([
+      {
+        $sort: { score: -1, date: 1 }
+      },
+      {
+        $group: {
+          _id: { userId: "$userId", quizId: "$quizId" },
+          doc: { $first: "$$ROOT" }
+        }
+      },
+      {
+        $replaceRoot: { newRoot: "$doc" }
+      },
+      {
+        $sort: { date: -1 }
+      }
+    ]);
+    await Result.populate(results, { path: 'userId', select: 'username' });
     res.json(results);
   } catch (err) {
-    console.error('Błąd pobierania wyników wszystkich użytkowników:', err);
+    console.error('Błąd pobierania najlepszych wyników:', err);
     res.status(500).json({ error: 'Błąd pobierania wyników wszystkich użytkowników' });
   }
 });
