@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { updateQuiz } from '../services/api';
 import axios from 'axios';
 import Logo from '../components/Logo';
 
@@ -42,7 +43,7 @@ function EditQuizPage() {
     setSuccess(false);
     try {
       const user = JSON.parse(localStorage.getItem('user'));
-      await axios.put(`http://localhost:5000/api/quiz/${id}`, { ...quiz, author: user.id });
+      await updateQuiz(id, { ...quiz, author: user.id }); 
       setSuccess(true);
       setTimeout(() => navigate('/quiz'), 1200);
     } catch (err) {

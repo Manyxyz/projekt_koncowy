@@ -18,12 +18,12 @@ function RegisterForm({ onSuccess }) {
     try {
       await registerUser(form);
       setSuccess(true);
-      onSuccess(); // np. przełącza na logowanie
+      onSuccess(); 
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        err.response?.data?.errors?.[0]?.msg || // wyświetl walidacyjny błąd z backendu
-        err.response?.data?.details ||          // wyświetl szczegóły błędu z backendu
+        err.response?.data?.errors?.[0]?.msg ||
+        err.response?.data?.details ||      
         'Rejestracja nie powiodła się'
       );
     }
@@ -57,8 +57,6 @@ function RegisterForm({ onSuccess }) {
         required
       />
       <button type="submit">Zarejestruj się</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>Rejestracja udana! Możesz się zalogować.</p>}
     </form>
   );
 }

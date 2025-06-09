@@ -3,6 +3,7 @@ const Quiz = require('../models/Quiz');
 const router = express.Router();
 const Result = require('../models/Result');
 const User = require('../models/User');
+const authMiddleware = require('../middleware/authMiddleware');
 
 router.get('/', async (req, res) => {
   try {
@@ -12,7 +13,8 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Błąd pobierania quizów' });
   }
 });
-router.post('/', async (req, res) => {
+
+router.post('/', authMiddleware, async (req, res) => {
   try {
     const { title, questions, image, author } = req.body;
     if (!title || !questions || !Array.isArray(questions) || questions.length === 0 || !author) {
@@ -26,13 +28,11 @@ router.post('/', async (req, res) => {
   }
 });
 
-// NOWA TRASA: edycja quizu
-router.put('/:id', async (req, res) => {
+router.put('/:id', authMiddleware, async (req, res) => {
   try {
     const { title, questions, image, author } = req.body;
     const quiz = await Quiz.findById(req.params.id);
     if (!quiz) return res.status(404).json({ error: 'Quiz nie znaleziony' });
-    // (opcjonalnie: sprawdź czy author === quiz.author)
     quiz.title = title;
     quiz.questions = questions;
     quiz.image = image;
@@ -51,7 +51,7 @@ router.get('/results/:userId', async (req, res) => {
     res.status(500).json({ error: 'Błąd pobierania wyników' });
   }
 });
-router.post('/result', async (req, res) => {
+router.post('/result', authMiddleware, async (req, res) => {
   try {
     const { userId, quizId, quizTitle, score, total } = req.body;
     const result = new Result({ userId, quizId, quizTitle, score, total });
@@ -87,7 +87,7 @@ router.get('/all-results', async (req, res) => {
     res.status(500).json({ error: 'Błąd pobierania wyników wszystkich użytkowników' });
   }
 });
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
     if (!quiz) return res.status(404).json({ error: 'Quiz nie znaleziony' });

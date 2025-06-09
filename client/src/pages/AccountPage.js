@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import Toast from '../components/Toast';
+import ConfirmModal from '../components/ConfirmModal';
 import { changeUsername, changePassword, deleteAccount } from '../services/api';
 
 function AccountPage() {
@@ -59,7 +60,6 @@ function AccountPage() {
 
   return (
     <div>
-      {/* Pasek górny z logo */}
       <div
         style={{
           width: '100%',
@@ -154,65 +154,15 @@ function AccountPage() {
         {error && <p style={{ color: 'red', marginTop: 12 }}>{error}</p>}
       </div>
       <Toast message={toast} onClose={() => setToast('')} />
-        {showDeleteModal && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(0,0,0,0.25)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 2000
-          }}
-          onClick={() => setShowDeleteModal(false)}
-        >
-          <div
-            style={{
-              background: '#fff',
-              borderRadius: '16px',
-              padding: '32px 40px',
-              minWidth: '320px',
-              boxShadow: '0 2px 16px rgba(0,0,0,0.18)',
-              position: 'relative'
-            }}
-            onClick={e => e.stopPropagation()}
-          >
-            <h3 style={{ color: '#d32f2f', marginTop: 0 }}>Potwierdź usunięcie konta</h3>
-            <p>Czy na pewno chcesz usunąć swoje konto? Tej operacji nie można cofnąć!</p>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
-              <button
-                onClick={() => setShowDeleteModal(false)}
-                style={{
-                  background: '#bcb3d9',
-                  color: '#262672',
-                  border: 'none',
-                  borderRadius: '8px',
-                  padding: '8px 18px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer'
-                }}
-              >
-                Anuluj
-              </button>
-              <button
-                onClick={handleDelete}
-                style={{
-                  background: '#d32f2f',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  padding: '8px 18px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer'
-                }}
-              >
-                Usuń konto
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        open={showDeleteModal}
+        title="Potwierdź usunięcie konta"
+        message="Czy na pewno chcesz usunąć swoje konto? Tej operacji nie można cofnąć!"
+        onCancel={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        confirmText="Usuń konto"
+        cancelText="Anuluj"
+      />
     </div>
   );
 }

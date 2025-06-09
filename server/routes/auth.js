@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
 router.post('/register', registerValidator, (req, res, next) => {
@@ -20,7 +20,7 @@ router.post('/login', loginValidator, (req, res, next) => {
   login(req, res, next);
 });
 
-router.put('/username', async (req, res) => {
+router.put('/username', authMiddleware, async (req, res) => {
   try {
     const { userId, newUsername } = req.body;
     if (!userId || !newUsername) return res.status(400).json({ error: 'Brak danych' });
@@ -34,7 +34,7 @@ router.put('/username', async (req, res) => {
   }
 });
 
-router.put('/password', async (req, res) => {
+router.put('/password', authMiddleware, async (req, res) => {
   try {
     const { userId, oldPassword, newPassword } = req.body;
     if (!userId || !oldPassword || !newPassword) return res.status(400).json({ error: 'Brak danych' });
@@ -50,7 +50,7 @@ router.put('/password', async (req, res) => {
   }
 });
 
-router.delete('/delete', async (req, res) => {
+router.delete('/delete', authMiddleware, async (req, res) => {
   try {
     const { userId } = req.body;
     if (!userId) return res.status(400).json({ error: 'Brak danych' });

@@ -77,7 +77,6 @@ function QuizPage() {
       style={{
         paddingBottom: '56px'
       }}>
-      {/* Pasek górny */}
       <div
         style={{
           width: '100%',
@@ -92,7 +91,6 @@ function QuizPage() {
           position: 'relative'
         }}
       >
-        {/* Hamburger menu po lewej */}
         <div
           style={{
             position: 'absolute',
@@ -121,9 +119,7 @@ function QuizPage() {
             </div>
           </button>
         </div>
-        {/* Logo na środku */}
         <Logo style={{ fontSize: '1.4rem' }} />
-        {/* Wyloguj po prawej */}
         <button
           onClick={handleLogout}
           style={{
@@ -143,7 +139,6 @@ function QuizPage() {
         >
           Wyloguj
         </button>
-        {/* Rozwijane menu */}
         {menuOpen && (
           <div
             ref={menuRef}
@@ -208,7 +203,6 @@ function QuizPage() {
           </div>
         )}
       </div>
-      {/* Modal z potwierdzeniem usunięcia quizu */}
       {confirmDeleteId && (
         <div
           style={{
@@ -272,11 +266,9 @@ function QuizPage() {
           </div>
         </div>
       )}
-      {/* Modal z wynikami użytkownika */}
       {showResults && (
         <ResultsModal results={results} onClose={handleCloseResults} />
       )}
-      {/* Modal z wynikami wszystkich użytkowników */}
       {showAllResults && (
         <AllResultsModal allResults={allResults} onClose={handleCloseAllResults} />
       )}

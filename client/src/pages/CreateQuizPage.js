@@ -62,7 +62,6 @@ function CreateQuizPage() {
        <div>
         <Toast message={toast} onClose={() => setToast('')} />
       </div>
-      {/* Pasek górny */}
       <div
         style={{
           width: '100%',

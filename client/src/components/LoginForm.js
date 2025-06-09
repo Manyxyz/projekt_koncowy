@@ -1,4 +1,3 @@
-// client/src/components/LoginForm.js
 import { useState } from 'react';
 import { loginUser } from '../services/api';
 

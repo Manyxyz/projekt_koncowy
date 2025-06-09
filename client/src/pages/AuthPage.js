@@ -18,7 +18,6 @@ function AuthPage() {
 
   return (
     <div>
-      {/* Pasek z logo */}
       <div
         style={{
           width: '100%',

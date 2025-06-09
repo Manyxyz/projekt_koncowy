@@ -10,7 +10,6 @@ function QuizCard({ quiz, onDeleteRequest }) {
   
 
   useEffect(() => {
-    // Automatyczne dopasowanie wielkości czcionki do wysokości tytułu (max 2 linie)
     const resizeFont = () => {
       if (!titleRef.current) return;
       let size = 18;
@@ -53,7 +52,7 @@ function QuizCard({ quiz, onDeleteRequest }) {
         >
           <img
             src={quiz.image || 'https://via.placeholder.com/220x120?text=Quiz'}
-            alt={quiz.title}
+            alt=""
             style={{
               width: '100%',
               height: '120px',
