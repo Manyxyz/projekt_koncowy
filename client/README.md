@@ -1,70 +1,75 @@
-# Getting Started with Create React App
+## Projekt zaliczeniowy z laboratorium "Programowanie aplikacji internetowych"
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Tematyka projektu: Platforma Quizowa (QuizzCamp)
 
-## Available Scripts
+## Autor: Maciej Targoński
 
-In the project directory, you can run:
+## Funkcjonalności:
+- rejestracja i logowanie użytkowników (uwierzytelnianie JWT)
+- tworzenie, edycja i usuwanie quizów przez użytkownika
+- rozwiązywanie quizów i zapisywanie wyników
+- przeglądanie dostępnych quizów oraz własnych quizów
+- podgląd własnych wyników oraz najlepszych wyników wszystkich użytkowników
+- edycja profilu: zmiana nazwy użytkownika, zmiana hasła, usuwanie konta
+- panel potwierdzeń i powiadomień (modale, toast)
 
-### `npm start`
+## Narzędzia i technologie:
+- strona serwera: Node.js, Express.js, Mongoose, MongoDB, JWT, bcrypt, dotenv, express-validator, cors
+- baza danych: MongoDB, Mongoose (ORM)
+- strona klienta: React, React Router DOM, Axios, CSS-in-JS
+- stylowanie: CSS-in-JS, własne style
+- powiadomienia: własny komponent Toast
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Wymagania
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Wersje programów wykorzystane do tworzenia aplikacji (aplikacja nie została przetestowana z kompatybilnością wcześniejszych wersji):
+- Node.js v22.13.0
+- npm 10.9.2
+- MongoDB Atlas
 
-### `npm test`
+### Kluczowe zależności backendu:
+- express ^5.1.0
+- mongoose ^8.15.1
+- bcrypt ^6.0.0
+- dotenv ^16.5.0
+- express-validator ^7.2.1
+- jsonwebtoken ^9.0.2
+- cors ^2.8.5
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Kluczowe zależności frontendu:
+- react ^19.1.0
+- react-router-dom ^7.6.2
+- axios ^1.9.0
+- react-scripts 5.0.1
 
-### `npm run build`
+## Uruchomienie
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Sklonuj repozytorium do wybranego folderu.
+2. Przejdź do folderu `server`:
+    - Zainstaluj zależności:  
+      `npm install`
+    - Uruchom serwer backendu:  
+      `node server.js`
+3. Przejdź do folderu `client`:
+    - Zainstaluj zależności:  
+      `npm install`
+    - Uruchom aplikację frontendową:  
+      `npm start`
+4. Otwórz aplikację w przeglądarce pod adresem:  
+   `http://localhost:3000`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Uwagi
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Domyślnie backend nasłuchuje na porcie 5000, frontend na 3000.
+- Po rejestracji i zalogowaniu można tworzyć własne quizy oraz rozwiązywać quizy innych użytkowników.
+- W przypadku problemów z połączeniem z bazą MongoDB sprawdzić poprawność danych w pliku `.env`.
 
-### `npm run eject`
+## Konta testowe
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+-   **Test**
+    -   Login: asd@wp.pl.com
+    -   Hasło: asdasd
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Możesz utworzyć własne konta testowe poprzez formularz rejestracji.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---

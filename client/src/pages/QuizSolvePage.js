@@ -43,7 +43,6 @@ function QuizSolvePage() {
         setScore(points);
         setShowResult(true);
 
-        // Zapisz wynik do bazy
         const user = JSON.parse(localStorage.getItem('user'));
         axios.post('http://localhost:5000/api/quiz/result', {
           userId: user.id,
@@ -68,7 +67,6 @@ function QuizSolvePage() {
 
   return (
     <div>
-      {/* Pasek górny */}
       <div
         style={{
           width: '100%',

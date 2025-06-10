@@ -1,6 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
-import { deleteQuiz } from '../services/api';
 
 function QuizCard({ quiz, onDeleteRequest }) {
   const titleRef = useRef(null);
@@ -47,16 +46,16 @@ function QuizCard({ quiz, onDeleteRequest }) {
             flexDirection: 'column',
             alignItems: 'center',
             transition: 'box-shadow 0.2s',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           <img
-            src={quiz.image || 'https://via.placeholder.com/220x120?text=Quiz'}
+            src={quiz.image || 'https://ocdn.eu/pulscms-transforms/1/dfuk9kpTURBXy9kMjk5NGQzMzE4MjJmOTY3ODU3ZTJhMDUzZDZmNzg3MC5qcGeTlQMAzQFFzQoozQW2lQLNBLAAw8OTCaZiMDJlN2YG3gABoTAB/quiz.jpeg'}
             alt=""
             style={{
               width: '100%',
               height: '120px',
-              objectFit: 'cover'
+              objectFit: 'cover',
             }}
           />
           <div

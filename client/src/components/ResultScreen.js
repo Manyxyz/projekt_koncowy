@@ -4,7 +4,6 @@ import Logo from './Logo';
 function ResultScreen({ quiz, score, onBack }) {
   return (
     <div>
-      {/* Pasek górny */}
       <div
         style={{
           width: '100%',
